@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tank</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+        body{
+            background-color: gray;
+        }
+        #map{
+            position: relative;
+            width: 90%;
+            aspect-ratio: 2/1;
+            margin: auto;
+            background-color: rgb(200, 200, 200);
+        }
+        #map > * {
+            position: absolute;
+        }
+        #player1, #player2{
+            display: none;
+            width: 80px;
+            z-index: 1;   
+        }
+        #player1 > img, #player2 > img{
+            width: 100%;
+        }
+        #play{
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            background-color: white;
+            border-radius: 5px;
+            padding: 3px;
+            font-size: 2em;
+        }
+        #alerts{
+            top: 30%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #hud{
+            width: 90%;
+            margin: auto;
+            background-color: #fff;
+            min-height: 40px;
+            display: flex;
+            justify-content: space-between;
+        }
+        #settings{
+            width: 35px;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+        #settings > img{
+           width: 100%;
+        }
+        .health-container{
+            display: flex;
+        }
+        .health-container > div{
+            margin: auto 25px;
+            display: flex;
+        }
+        .health-container > div > * {
+            margin: 10px;
+        }
+        .health{
+            background-color: red;
+            height: 20px;
+            width: 200px;
+        }
+        .health > div{
+            background-color: green;
+            height: 20px;
+            text-align: center;
+            transition: all .3s;
+            /*width*/
+        }
+        #modalContainer{
+            position: absolute;
+            top: 0; bottom: 0; left: 0; right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, .5);
+            display: none;
+            z-index: 2;
+        }
+        #modal{
+            transform: translateY(50%);
+            width: 850px;
+            margin: auto;
+            background-color: #fff;
+        }
+        #chooseMap{
+            width: 90%;
+            margin: 5px auto;
+            display: flex;
+            border-bottom: solid 1px gray;
+        }
+        #keybinds{
+            display: flex;
+            margin: auto;
+            width: 90%;
+        }
+        .kbTitle{
+            width: 100%;
+            text-align: center;
+        }
+        .keybindsPlayers{
+            width: 40%;
+            margin: auto;
+            padding-bottom: 40px;
+        }
+        .keybindsPlayers > * {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding-bottom: 3px;
+            border-bottom: 1px solid rgb(200, 200, 200);
+        }
+
+        .keybindsPlayers::before{
+            font-size: 1.5em;
+            background-color: rgb(200, 200, 200);   
+        }
+        #p1keybinds::before{
+            content: "player 1";
+        }
+        #p2keybinds::before{
+            content: "player 2";
+        }
+        .maps{
+            width: 200px;
+            height: 100px;
+            background-color: green;
+            margin: 20px;
+            cursor: pointer;
+            text-align: center;
+            line-height: 100px;
+        }
+        #map2, #map3, #map4{
+            background-color: lightgreen;
+        }
+        .bullet{
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: black;
+            border-radius: 50%;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="game">
+        <div id="hud">
+            <div class="health-container">
+                <div id="player1Container">
+                    <p>player 1:</p>
+                    <div class="health"><div id="p1health">100%</div></div>
+                </div>
+                <div id="player2Container">
+                    <p>player 2:</p>
+                    <div class="health"><div id="p2health">100%</div></div>
+                </div>
+            </div>
+            <div id="time-container">
+                <h1 id="timeDisplay">time &rarr; 2:00</h1>
+            </div>
+            <div id="settings"> 
+                <img src="img/settings.svg">
+            </div>
+            <!--modal container-->
+            <div id="modalContainer">
+                <div id="modal">
+                    <h1 class="kbTitle">Maps</h1>
+                    <div id="chooseMap">
+                        <div class="maps" id="map1">map 1</div>
+                        <div class="maps" id="map2">no</div>
+                        <div class="maps" id="map3">no</div>
+                        <div class="maps" id="map4">no</div>
+                    </div>
+                    <h1 class="kbTitle">Keybinds</h1>
+                    <div id="keybinds">
+                        <div id="p1keybinds" class="keybindsPlayers"></div>
+                        <div id="p2keybinds" class="keybindsPlayers"></div>
+                    </div>
+                </div>
+            </div>
+            <!--end m.c-->
+        </div>
+        <div id="map">
+            <div id="play">Play</div>
+            <h3 id="alerts"></h3>
+            <div id="player1"><img src="img/tank1.png"></div>
+            <div id="player2"><img src="img/tank2.png"></div>    
+            <!--<div id="utility"><img src=""></div>-->
+        </div>
+    </div> 
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pasapalabra</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            background-color: rgb(238, 238, 238);
+        }
+        #container{
+            width: 0;
+            height: 100vh;
+            margin: auto;
+        }
+        #response{
+            margin: auto;
+            position: absolute;
+            top: calc(100vh / 2.05);
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #response > div {
+            display: flex;
+            justify-content: center;
+        }
+        .letter{
+            position: absolute;
+            transform-origin: center calc(100vh / 2.05);
+            aspect-ratio: 1/1;
+            height: 7%;
+            border-radius: 50%;
+            background-color: gray;
+            border: solid 1.5px rgb(30, 30, 30);
+            transition: background-color .3s ease;
+            transition: border .3s ease;
+        }
+        .letter > *{
+            position: absolute;
+            left: 0; top: 0; bottom: 0; right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .noResponse{
+            border: solid 2px blue;
+            background-color: lightblue;
+        }
+        .correct{
+            border: solid 2px darkgreen;
+            background-color: lightgreen;
+        }
+        .error{
+            border: solid 2px red;
+            background-color: lightcoral;
+        }
+        #errorResponse{
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all .5s ease;
+        }
+
+        @media (max-aspect-ratio: 1/1){
+            .letter{
+                transform-origin: center  calc(100vw / 2.05);
+            }
+            #response{
+                top: calc(100vw / 2.05);
+            }
+            #errorResponse{
+                top: 80%
+            }
+        }
+        </style>
+</head>
+<body>
+    <div id="errorResponse"></div>
+    <div id="container"></div>
+    <div id="response">
+        <div>
+            <h5 id="marcador"></h5>
+        </div>
+        <div>
+            <input type="text" id="respuesta" placeholder="presiona el boton comenzar">
+        </div>
+        <div>
+            <button id="restart">reiniciar</button>
+            <button id="start">comenzar</button>
+        </div>
+        <div>
+            <h2 id="question"></h2>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>

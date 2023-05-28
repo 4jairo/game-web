@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang ="es">
+  <head>
+    <link rel="stylesheet" href="simon.css"></link>
+    <title>Simon Dice</title>
+  </head>
+  <body>
+    <h1>SIMON DICE /  BY - JORDI ALBERT</h1>
+  </h1>
+     <button id="start-button" class="go" onclick="go()">INICIAR JUEGO</button>
+     <button id="start-game" class="gogame" onclick="gogame1(this)">EMPEZAR A JUGAR</button>
+     <div id="flex" class="flex-container">
+       <div class= "cuadrado-2"</div>
+       <button class="rojo" onclick="polsador(this)"></button>
+       <button class="azul" onclick="polsador(this)"></button>
+       </br>
+       <button class="verde"onclick="polsador(this)"></button>
+       <button class="amarillo" onclick="polsador(this)"></button>
+       </br>
+       <div class="alert">
+       <span class="closebtn" onclick="this.parentElement.style.display='none';">x</span>
+       <strong>REGLAS | </strong> Comienza a jugar, mira la secuencia e imitala (cuando hagas click, espera a que el boton se apague para hacer el siguiente click). Ganas cuando se desborde la memoria del programa u ocurra un fallo, aunque probablemente pierdas cuando eso ocurra :)
+      </div>
+  </div>
+    <script src="simon.js"></script>
+  </body>
+</html>

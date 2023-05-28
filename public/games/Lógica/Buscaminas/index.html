@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>minesweeper</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-size: 25px;
+        }
+        body{
+            background-color: gray;
+        }
+        #gameControl{
+            width: fit-content;
+            margin: auto;
+        }
+        #gameControl > div{
+            width: fit-content;
+            margin: auto;
+        }
+        #gameControl > .rowColInputCont{
+            display: flex;
+        }
+        #gameControl > .rowColInputCont > *{
+            margin: 10px;
+        }
+        #gameControl > .rowColInputCont p{
+            width: fit-content;
+            margin: 5px auto;
+        }
+        #game{
+            position: relative;
+        }
+        #game > #annoucement{
+            position: absolute;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+        #game > #annoucement > *{
+            padding: 7px;
+            border-radius: 5px;
+            background-color: cadetblue;
+
+        }
+        #game > #tableCont > #table{
+            user-select: none;
+            width: fit-content;
+            margin: auto;
+        }
+        #game > #tableCont > #table tr td{
+            text-align: center;
+            width: 50px; 
+            height: 50px;
+            background-color: rgb(200, 200, 200);            
+        }
+        #game > #tableCont > #table tr td:hover{
+            background-color: rgba(200, 200, 200, .7);            
+        }
+        #game > #gameInformation{
+            width: fit-content;
+            margin: auto;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="gameControl">
+        <div>
+            <button id="startGame">Start game</button>
+        </div>
+        <div class="rowColInputCont">
+            <div>
+                <p>columns: <span class="inputValue"></span></p>
+                <input type="range" max="45" min="2" id="columns" value="16">
+            </div>
+            <div>
+                <p>rows: <span class="inputValue"></span></p>
+                <input type="range" max="30" min="2" id="rows">
+            </div>
+            <div>
+                <p>diff: <span class="inputValue"></span>%</p>
+                <input type="range" max="30" min="10" id="diff">
+            </div>
+        </div>
+    </div>
+    <div id="game">
+        <div id="annoucement">
+            <p id="annoucementContent">annoucement</p>
+        </div>
+        <div id="gameInformation">
+            <div>
+                <p>Mines left: <span id="minesLeft"></span></p>
+            </div>
+        </div>
+        <div id="tableCont"></div>
+    </div>
+    <script src="minesweeper.js"></script>
+</body>
+</html>
