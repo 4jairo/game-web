@@ -9,6 +9,10 @@ module.exports = (err, req, res) => {
             code: 404,
             message: 'id does not exist'
         },
+        MissingSchemaError: {
+           code: 500,
+           message: 'any comments yet' 
+        },
         default: {
             code: 500,
             message: 'something failed'
@@ -19,6 +23,7 @@ module.exports = (err, req, res) => {
         ? errorCodes[err.name] 
         : errorCodes.default
 
+    console.log(currentError.message)
     res.status(currentError.code).send({
         error: currentError.message,
         name: err.name

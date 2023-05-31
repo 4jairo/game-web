@@ -9,23 +9,52 @@ const jwt = require('jsonwebtoken')
 
 //!getting all Collections (once)
 getAllCollections().then(collections => {
-    for (const game of collections) {
-        mongoose.model(`${game}-comment`, CommentScheema)
-        gamesConversations[game] = `${game}-comment` 
+    for (const col of collections) {
+        if(col === 'users') continue
+
+        mongoose.model(col, CommentScheema)
     }
 })
-const gamesConversations = {}
+
+//!get all game comments
+commentsRouter.get('/:game', async (req, res, next) => {
+    try {
+        const game = req.params.game.replace(/\s/g,'-')
+
+        //if any comment yet
+        const modelName = `${game}-comments`.toLowerCase()
+        if(!mongoose.models[modelName]) {
+            mongoose.model(modelName, CommentScheema)
+            res.json([])
+
+        } else {
+            const CommentModel = mongoose.model(modelName)
+            const allGameComments = await CommentModel.find({})//.sort({date: -1})
+            .populate('ownerId', {name: 1, _id: 0}) 
+            res.json(allGameComments)
+        }
+    
+    } catch (error) {
+        console.log('get all comment', error.name)
+        next(error)
+    }
+})
 
 
-//!token verification
+
+
+
+
+
+
+//!token verification (!get all commets)
 commentsRouter.use('/', (req, res, next) => {
     try {
         const token = req.headers.authorization.split(" ")[1]
         const payload = jwt.verify(token, process.env.SECRET)
         const timeDifference = (new Date - new Date(payload.expiration)) / 60000
-        
-        if(timeDifference < 0) {
-            //res.payload = payload
+        if(timeDifference < 120) {
+            res.payload = payload
             next()
         } else res.json({error: 'token expired'})
 
@@ -38,24 +67,27 @@ commentsRouter.use('/', (req, res, next) => {
 //!new comment
 commentsRouter.post('/:game', async (req, res, next) => {
     try {
-        const {content, ownerId} = req.body
-        const game = req.params.game
-        //if any comment in the comments game
-        if(!gamesConversations[game]) {
-            mongoose.model(`${game}-comment`, CommentScheema)
-            gamesConversations[game] = `${game}-comment`
-        }
+        const { content } = req.body
+        const game = req.params.game.replace(/\s/g,'-')
+        const { userId: ownerId } = res.payload
 
-        //creating new model and 
-        const CommentModel = mongoose.model(gamesConversations[game])
+        //if no collection created
+        const modelName = `${game}-comments`.toLowerCase()
+        if(!mongoose.models[modelName]) mongoose.model(modelName, CommentScheema)
+
+        //creating new comment
+        const CommentModel = mongoose.model(modelName)
 
         const newComment = CommentModel({
             content,
-            ownerId,
+            ownerId: new mongoose.Types.ObjectId(ownerId),
             date: new Date
         })
-        const savedComment = await newComment.save()
-        res.json(savedComment)
+
+        await newComment.save()
+
+        const responseComment = await newComment.populate('ownerId', {name: 1, _id: 0})
+        res.json(responseComment)
 
     } catch (err) {
         console.log('post comment', err.name)
@@ -63,44 +95,16 @@ commentsRouter.post('/:game', async (req, res, next) => {
     }
 })
 
-
-//!delete comment
-commentsRouter.delete('/:game/:id', async (req, res, next) => {
-    try {
-        const { game, id: commentId } = req.params
-        const CommentModel = mongoose.model(gamesConversations[game])
-    
-        const deletedComment = await CommentModel.findByIdAndDelete(commentId)
-        res.json(deletedComment)
-        
-    } catch (err) {
-        console.log('delete comment', err.name)
-        next(err)
-    }
-})
-
-
-//!get all game comments
-commentsRouter.get('/:game', async (req, res, next) => {
-    try {
-        const game = req.params.game    
-        const CommentModel = mongoose.model(gamesConversations[game])
-
-        const allGameComments = await CommentModel.find({})
-        res.json(allGameComments)
-
-    } catch (error) {
-        console.log('get comment', error.name)
-        next(error)
-    }
-})
+/*
 
 
 //!edit comment
 commentsRouter.patch('/:game/:id', async (req, res, next) => {
     try {
-        const { game, id: commentId } = req.params
-        const CommentModel = mongoose.model(gamesConversations[game])
+        const { game: notParsedGame, id: commentId } = req.params
+        const game = notParsedGame.replace(/\s/g,'-')
+        const modelName = `${game}-comments`.toLowerCase()
+        const CommentModel = mongoose.model(modelName)
 
         const newNoteContent = {
             content: req.body.content,
@@ -115,5 +119,25 @@ commentsRouter.patch('/:game/:id', async (req, res, next) => {
       next(err)
     }
 })
+
+//!delete comment
+commentsRouter.delete('/:game/:id', async (req, res, next) => {
+    try {
+        const { game: notParsedGame, id: commentId } = req.params
+        const game = notParsedGame.replace(/\s/g,'-')
+
+        const modelName = `${game}-comments`.toLowerCase()
+        const CommentModel = mongoose.model(modelName)
+    
+        const deletedComment = await CommentModel.findByIdAndDelete(commentId)
+        res.json(deletedComment)
+        
+    } catch (err) {
+        console.log('delete comment', err.name)
+        next(err)
+    }
+})
+
+*/
 
 module.exports = commentsRouter

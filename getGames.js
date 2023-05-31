@@ -1,8 +1,6 @@
 const fs = require('fs').promises
 const path = require('path')
 
-
-
 const gamesFolder = path.join(__dirname, 'public', 'games')
 async function getGames(){
     const gamesReady = []
@@ -20,14 +18,14 @@ async function getGames(){
 
                 const imgExtensions = ['png','jpg','jpeg','svg']                
                 const gameImgs = gameFiles.filter(file => imgExtensions.includes(file.split('.').pop()))
-                const indexImg = gameImgs.filter(file => file.split('.').shift() == 'index')
                 
                 gamesReady.push({
                     ready: HTMLFiles.length ? true : false,
                     main: HTMLFiles.includes('index.html') ? 'index.html' : HTMLFiles[0],
-                    imgLogo: indexImg.length ? indexImg[0] : gameImgs[0],
+                    gameImgs,
                     modality,
-                    game
+                    game,
+                    test: gameFiles
                 })
                 
             }
@@ -36,6 +34,5 @@ async function getGames(){
     } catch (err) {
         console.log(err)
     }
-} 
-
+}
 module.exports = {getGames}

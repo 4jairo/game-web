@@ -5,9 +5,10 @@ const CommentScheema = new mongoose.Schema({
         required: true,
         type: String,
     },
-    ownerId: {
+    ownerId:{
         required: true,
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     },
     date: {
         required: true,

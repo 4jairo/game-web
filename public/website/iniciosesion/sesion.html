@@ -1,0 +1,37 @@
+
+  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Iniciar Sesión</title>
+  <link rel="stylesheet" href="sesion.css" />
+</head>
+<body>
+  <div class="cont">
+    <div class="main-box">
+      <div id="error"></div>
+      <div class="create">
+        <form id="loginForm">
+          <img src="../imagenes/logo.png" alt="Imagen de inicio de sesión">
+          <input class="login" id="loginBtn" value="INICIANDO SESIÓN" type="button">
+          <br />
+          <i class="fa fa-fw fa-envelope-o" aria-hidden="true"></i>
+          <input type="text" class="email" placeholder="NOMBRE DE USUSARIO" name="name"/>
+          <br />
+          <i class="fa fa-fw fa-lock" aria-hidden="true"></i>
+          <input type="password" class="pass" placeholder="CONTRASEÑA" name="password"/>
+          <br />
+          <!--has olvidado la contraseña no es posbile (eliminar?)-->
+          <p><a class="contra" href="#">¿Has olvidado la contraseña?</a></p>
+          <input class="login" value="ENVIAR" type="button" name="enviar">
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script src="index.js"></script>
+</body>
+</html>

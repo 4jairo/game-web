@@ -14,7 +14,7 @@ usersRouter.post('/signin', async (req, res, next) => {
         const user = await UserModel.findOne({name: name})
 
         if(user) {
-            res.json({error: 'This user alredy exists'})
+            res.json({error: 'Este usuario ya existe'})
         } else {
             //user does not exist (good)
             const hashedPassword = await bcryptjs.hash(password, 10)
@@ -46,7 +46,7 @@ usersRouter.post('/signin', async (req, res, next) => {
 usersRouter.post('/login', async (req, res, next) => {
     try {
         if(req.headers.authorization){
-            const token = req.headers.authorization.split(" ")[1]
+            const token = req.headers.authorization.split(" ").pop()
             const payload = jwt.verify(token, process.env.SECRET)
             const timeDifference = (new Date - new Date(payload.expiration)) / 60000 //this returns the token lifetime in minutes
         
@@ -73,7 +73,7 @@ usersRouter.post('/login', async (req, res, next) => {
     try{
         const { name, password } = req.body
         const user = await UserModel.findOne({name: name})
-
+        
         const ispasswordOk = user 
             ? await bcryptjs.compare(`${password}`, user.password)
             : false 
@@ -89,10 +89,10 @@ usersRouter.post('/login', async (req, res, next) => {
             res.json({ token, name: user.name })
 
         } else {
-            res.json({error: 'Password or Username not correct'})
+            res.json({error: 'Usuario o Contraseña no correcta'})
         }
     } catch (err) {
-        console.log('login by password:',err)
+        console.log('login by password:',err.name)  
         next(err)
     }
 })
